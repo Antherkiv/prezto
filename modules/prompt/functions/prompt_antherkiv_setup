@@ -108,8 +108,8 @@ function prompt_antherkiv_setup {
   zstyle ':prezto:module:git:info' verbose 'yes'
   zstyle ':prezto:module:git:info:action' format '%F{7}:%f%%B%F{9}%s%f%%b'
   zstyle ':prezto:module:git:info:added' format ' %%B%F{2}✛%f%%b'
-  zstyle ':prezto:module:git:info:ahead' format ' %%B%F{13}⇡%f%%b'
-  zstyle ':prezto:module:git:info:behind' format ' %%B%F{13}⇣%f%%b'
+  zstyle ':prezto:module:git:info:ahead' format ' %%B%F{13}%f%%b'
+  zstyle ':prezto:module:git:info:behind' format ' %%B%F{13}%f%%b'
   zstyle ':prezto:module:git:info:branch' format ' %%B%F{2}%b%f%%b'
   zstyle ':prezto:module:git:info:remote' format '%%B%F{9}%R%f%%b'
   zstyle ':prezto:module:git:info:commit' format '%%B%F{3}%.7c%f%%b'
@@ -130,7 +130,7 @@ function prompt_antherkiv_setup {
     show_return+='%? '
   fi
   # Set python-info format
-  zstyle ':prezto:module:python:info:virtualenv' format '(%f%F{14}%v%F{7})'
+  zstyle ':prezto:module:python:info:virtualenv' format '%f%F{14}%v%F{7}'
 
   # Get the async worker set up
   _antherkiv_cur_git_root=''
