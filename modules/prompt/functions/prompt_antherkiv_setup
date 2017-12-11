@@ -5,6 +5,19 @@
 #   Antherkiv <antherkiv@gmail.com>
 #
 
+function prompt_antherkiv_build_top_prompt {
+  if [[ -n "$_prompt_antherkiv_git" ]]; then
+    print -n '${_prompt_antherkiv_git} $_separator '
+  fi
+  if [[ -n "$python_info" ]]; then
+    print -n '${python_info[virtualenv]} $_separator '
+  fi
+}
+
+function prompt_antherkiv_build_bottom_prompt {
+  print -n '${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{4}${_prompt_antherkiv_pwd}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
+}
+
 function prompt_antherkiv_async_callback {
   case $1 in
     prompt_antherkiv_async_git)
@@ -94,21 +107,21 @@ function prompt_antherkiv_setup {
   # Set git-info parameters.
   zstyle ':prezto:module:git:info' verbose 'yes'
   zstyle ':prezto:module:git:info:action' format '%F{7}:%f%%B%F{9}%s%f%%b'
-  zstyle ':prezto:module:git:info:added' format ' %%B%F{2}✚%f%%b'
-  zstyle ':prezto:module:git:info:ahead' format ' %%B%F{13}⬆%f%%b'
-  zstyle ':prezto:module:git:info:behind' format ' %%B%F{13}⬇%f%%b'
+  zstyle ':prezto:module:git:info:added' format ' %%B%F{2}✛%f%%b'
+  zstyle ':prezto:module:git:info:ahead' format ' %%B%F{13}⇡%f%%b'
+  zstyle ':prezto:module:git:info:behind' format ' %%B%F{13}⇣%f%%b'
   zstyle ':prezto:module:git:info:branch' format ' %%B%F{2}%b%f%%b'
-  zstyle ':prezto:module:git:info:remote' format 'remote:%R'
+  zstyle ':prezto:module:git:info:remote' format '%R'
   zstyle ':prezto:module:git:info:commit' format ' %%B%F{3}%.7c%f%%b'
   zstyle ':prezto:module:git:info:deleted' format ' %%B%F{1}✖%f%%b'
-  zstyle ':prezto:module:git:info:modified' format ' %%B%F{4}✱%f%%b'
+  zstyle ':prezto:module:git:info:modified' format ' %%B%F{4}✴%f%%b'
   zstyle ':prezto:module:git:info:position' format ' %%B%F{13}%p%f%%b'
-  zstyle ':prezto:module:git:info:renamed' format ' %%B%F{5}➜%f%%b'
-  zstyle ':prezto:module:git:info:stashed' format ' %%B%F{6}✭%f%%b'
-  zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{3}═%f%%b'
-  zstyle ':prezto:module:git:info:untracked' format ' %%B%F{7}◼%f%%b'
+  zstyle ':prezto:module:git:info:renamed' format ' %%B%F{5}↹%f%%b'
+  zstyle ':prezto:module:git:info:stashed' format ' %%B%F{6}⼐%f%%b'
+  zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{3}❖%f%%b'
+  zstyle ':prezto:module:git:info:untracked' format ' %%B%F{7}⊖%f%%b'
   zstyle ':prezto:module:git:info:keys' format \
-    'status' '%b %p %c:%s%A%B%S%a%d%m%r%U%u'
+    'status' '%R:%b%p:%c%s%A%B%S%a%d%m%r%U%u'
 
   # Set up non-zero return value display
   local show_return="✘ "
@@ -117,7 +130,7 @@ function prompt_antherkiv_setup {
     show_return+='%? '
   fi
   # Set python-info format
-  zstyle ':prezto:module:python:info:virtualenv' format '%f%F{3}(%v)%F{7} '
+  zstyle ':prezto:module:python:info:virtualenv' format '(pyenv:%f%F{3}%v%F{7})'
 
   # Get the async worker set up
   _antherkiv_cur_git_root=''
@@ -126,10 +139,12 @@ function prompt_antherkiv_setup {
   _prompt_antherkiv_pwd=''
 
   # Define prompts.
-  PROMPT='${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{4}${_prompt_antherkiv_pwd}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
-  RPROMPT='$python_info[virtualenv]${editor_info[overwrite]}%(?:: %F{1}'
+  PROMPT='
+${(e)$(prompt_antherkiv_build_top_prompt)}
+${(e)$(prompt_antherkiv_build_bottom_prompt)}'
+  RPROMPT='${editor_info[overwrite]}%(?:: %F{1}'
   RPROMPT+=${show_return}
-  RPROMPT+='%f)${VIM:+" %B%F{6}V%f%b"}${_prompt_antherkiv_git}'
+  RPROMPT+='%f)${VIM:+" %B%F{6}V%f%b"}'
   SPROMPT='zsh: correct %F{1}%R%f to %F{2}%r%f [nyae]? '
 }
 
