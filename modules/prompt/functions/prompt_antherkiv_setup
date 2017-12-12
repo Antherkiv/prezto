@@ -6,16 +6,17 @@
 #
 
 function prompt_antherkiv_build_top_prompt {
+  print -n '%F{15}%n%f@%F{13}${$(/sbin/ifconfig | grep \"inet \" | grep -v \"127.0.0.1\" | head -1 | awk \"{print \\\$2;}\")}%f '
   if [[ -n "$_prompt_antherkiv_git" ]]; then
-    print -n '${_prompt_antherkiv_git} $_separator '
+    print -n '${_prompt_antherkiv_git} ${_separator} '
   fi
   if [[ -n "$python_info" ]]; then
-    print -n '${python_info[virtualenv]} $_separator '
+    print -n '${python_info[virtualenv]} ${_separator} '
   fi
 }
 
 function prompt_antherkiv_build_bottom_prompt {
-  print -n '${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{4}${_prompt_antherkiv_pwd}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
+  print -n '%F{11}(%*)%f ${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{15}${_prompt_antherkiv_pwd}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
 }
 
 function prompt_antherkiv_async_callback {
@@ -100,28 +101,32 @@ function prompt_antherkiv_setup {
 
   # Set editor-info parameters.
   zstyle ':prezto:module:editor:info:completing' format '%B%F{7}...%f%b'
-  zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%F{1}❯%F{3}❯%F{2}❯%f%b'
+  zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%F{5}❯%F{1}❯%F{9}❯%f%b'
   zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format ' %F{3}♺%f'
   zstyle ':prezto:module:editor:info:keymap:alternate' format ' %B%F{2}❮%F{3}❮%F{1}❮%f%b'
 
   # Set git-info parameters.
   zstyle ':prezto:module:git:info' verbose 'yes'
+  zstyle ':prezto:module:git:info:remote' format ' %%B%F{15}%R%s%f%%b'
+  zstyle ':prezto:module:git:info:branch' format '%%B%F{2}%b%f%%b'
+  zstyle ':prezto:module:git:info:commit' format '%%B%F{4}%.7c%f%%b'
   zstyle ':prezto:module:git:info:action' format '%F{7}:%f%%B%F{9}%s%f%%b'
+  zstyle ':prezto:module:git:info:indexed' format " %%B%F{10}✛%f%%b"
   zstyle ':prezto:module:git:info:added' format ' %%B%F{2}✛%f%%b'
   zstyle ':prezto:module:git:info:ahead' format ' %%B%F{13}⇡%f%%b'
   zstyle ':prezto:module:git:info:behind' format ' %%B%F{13}⇣%f%%b'
-  zstyle ':prezto:module:git:info:branch' format ' %%B%F{2}%b%f%%b'
-  zstyle ':prezto:module:git:info:remote' format '%%B%F{9}%R%f%%b'
-  zstyle ':prezto:module:git:info:commit' format '%%B%F{3}%.7c%f%%b'
+  zstyle ':prezto:module:git:info:dirty' format "%%B%F{1}✗%f%%b"
+  zstyle ':prezto:module:git:info:clean' format "%%B%F{2}✔%f%%b"
   zstyle ':prezto:module:git:info:deleted' format ' %%B%F{1}✖%f%%b'
+  zstyle ':prezto:module:git:info:unindexed' format "%%B%F{12}✴%f%%b"
   zstyle ':prezto:module:git:info:modified' format ' %%B%F{4}✴%f%%b'
-  zstyle ':prezto:module:git:info:position' format ' %%B%F{13}%p%f%%b'
+  zstyle ':prezto:module:git:info:position' format ' %%B%F{13}:%p%f%%b'
   zstyle ':prezto:module:git:info:renamed' format ' %%B%F{5}↹%f%%b'
   zstyle ':prezto:module:git:info:stashed' format ' %%B%F{6}⼐%f%%b'
   zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{3}❖%f%%b'
   zstyle ':prezto:module:git:info:untracked' format ' %%B%F{7}⊖%f%%b'
   zstyle ':prezto:module:git:info:keys' format \
-    'status' '%R:%b%p:%c%s%A%B%S%a%d%m%r%U%u'
+    'status' ' %b:%p:%c%R%s%S%D%C%A%B%a%i%I%d%m%r%u%U '
 
   # Set up non-zero return value display
   local show_return="✘ "
@@ -130,7 +135,7 @@ function prompt_antherkiv_setup {
     show_return+='%? '
   fi
   # Set python-info format
-  zstyle ':prezto:module:python:info:virtualenv' format '%f%F{14}%v%F{7}'
+  zstyle ':prezto:module:python:info:virtualenv' format '%F{4}%f%%B%F{9}%v%%b%f'
 
   # Get the async worker set up
   _antherkiv_cur_git_root=''
