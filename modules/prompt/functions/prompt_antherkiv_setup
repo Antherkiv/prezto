@@ -115,8 +115,8 @@ function prompt_antherkiv_setup {
   zstyle ':prezto:module:git:info:added' format ' %%B%F{2}✛%f%%b'
   zstyle ':prezto:module:git:info:ahead' format ' %%B%F{13}⇡%f%%b'
   zstyle ':prezto:module:git:info:behind' format ' %%B%F{13}⇣%f%%b'
-  zstyle ':prezto:module:git:info:dirty' format "%%B%F{1}✗%f%%b"
-  zstyle ':prezto:module:git:info:clean' format "%%B%F{2}✔%f%%b"
+  zstyle ':prezto:module:git:info:dirty' format "%F{1}✗%f"
+  zstyle ':prezto:module:git:info:clean' format "%F{2}✔%f"
   zstyle ':prezto:module:git:info:deleted' format ' %%B%F{1}✖%f%%b'
   zstyle ':prezto:module:git:info:unindexed' format "%%B%F{12}✴%f%%b"
   zstyle ':prezto:module:git:info:modified' format ' %%B%F{4}✴%f%%b'
