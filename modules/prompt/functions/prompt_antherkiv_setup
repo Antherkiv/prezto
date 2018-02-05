@@ -6,7 +6,12 @@
 #
 
 function prompt_antherkiv_build_top_prompt {
-  print -n '%F{13}%n%f%F{7}@%f%F{3}${$(/sbin/ifconfig | grep \"inet \" | grep -v \"127.0.0.1\" | head -1 | awk \"{print \\\$2;}\")}%f '
+  if [ -f /sbin/ifconfig ]; then
+    print -n '%F{13}%n%f%F{7}@%f%F{3}${$(/sbin/ifconfig | grep \"inet \" | grep -v \"127.0.0.1\" | head -1 | awk \"{print \\\$2;}\")}%f '
+  fi
+  if [ -f /usr/bin/ip ]; then
+    print -n '%F{13}%n%f%F{7}@%f%F{3}${$(/usr/bin/ip a | grep \"inet \" | grep -v \"127.0.0.1\" | head -1 | awk \"{print \\\$2;}\")}%f '
+  fi
   if [[ -n "$_prompt_antherkiv_git" ]]; then
     print -n '${_prompt_antherkiv_git} ${_separator} '
   fi
